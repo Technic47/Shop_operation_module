@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: Operation_module
+
+  kafka:
+    bootstrap-servers: ${KAFKA_URL}
+    consumer:
+      group-id: ${MODULE_GROUP_ID}
+
+operation:
+  timeout: 1000
+
+scheduler:
+  cron: 0 * * * * *
