@@ -39,10 +39,11 @@ public class OperationService {
                 .anyMatch(operationId::equals);
     }
 
-    public Optional<OperationDto> getOperation(String operationId) {
+    public OperationDto getOperation(String operationId) {
         return operations.keySet().stream()
                 .filter(operation -> operation.getId().equals(operationId))
-                .findFirst();
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Operation with " + operationId + " not found"));
     }
 
     public List<OperationPayloadDto> getOperationData(String operationId) {
@@ -172,7 +173,7 @@ public class OperationService {
                     throw new RuntimeException(e);
                 }
             }
-            return getOperation(operationId).orElseThrow(() -> new RuntimeException("Operation with id " + operationId + " not found"));
+            return getOperation(operationId);
         });
     }
 }

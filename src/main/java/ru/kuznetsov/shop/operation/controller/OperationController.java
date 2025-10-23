@@ -9,7 +9,6 @@ import ru.kuznetsov.shop.represent.dto.OperationDto;
 import ru.kuznetsov.shop.represent.dto.OperationPayloadDto;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/operation")
@@ -24,8 +23,13 @@ public class OperationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<OperationDto>> getOperation(@PathVariable String id) {
+    public ResponseEntity<OperationDto> getOperation(@PathVariable String id) {
         return ResponseEntity.ok(operationService.getOperation(id));
+    }
+
+    @GetMapping("/payload/{id}")
+    public ResponseEntity<List<OperationPayloadDto>> getOperationData(@PathVariable String id) {
+        return ResponseEntity.ok(operationService.getOperationData(id));
     }
 
     @GetMapping("/payload/{id}/wait")
@@ -36,11 +40,6 @@ public class OperationController {
     @PostMapping()
     public void addOperation(@RequestBody OperationRequest operationRequest) {
         operationService.addOperation(operationRequest);
-    }
-
-    @PostMapping("/payload/{id}")
-    public ResponseEntity<List<OperationPayloadDto>> getOperationData(@PathVariable String id) {
-        return ResponseEntity.ok(operationService.getOperationData(id));
     }
 
     @PostMapping("/payload")
