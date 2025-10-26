@@ -3,10 +3,10 @@ spring:
     name: Operation_module
 
   kafka:
-    bootstrap-servers: ${KAFKA_URL}
+    bootstrap-servers: host.docker.internal:9092
     consumer:
-      group-id: ${MODULE_GROUP_ID}
+      group-id: test
 
 operation:
   timeout: 10
-  ttl: 3600
+  ttl: 1

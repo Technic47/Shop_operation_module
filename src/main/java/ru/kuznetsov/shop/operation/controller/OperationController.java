@@ -48,7 +48,7 @@ public class OperationController {
     }
 
     @DeleteMapping("/batch")
-    public void deleteOperation(@RequestBody List<OperationDto> operationDtoList) {
+    public void deleteOperationBatch(@RequestBody List<OperationDto> operationDtoList) {
         operationService.removeOperations(operationDtoList);
     }
 

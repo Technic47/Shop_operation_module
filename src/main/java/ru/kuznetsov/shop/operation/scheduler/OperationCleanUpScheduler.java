@@ -1,18 +1,29 @@
 package ru.kuznetsov.shop.operation.scheduler;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
 import ru.kuznetsov.shop.operation.service.OperationService;
+
+import java.time.Instant;
 
 @Component
 @RequiredArgsConstructor
 public class OperationCleanUpScheduler {
 
+    @Value("${operation.ttl}")
+    private long operationTTL;
+
+    private final ThreadPoolTaskScheduler taskScheduler;
     private final OperationService operationService;
 
-    @Scheduled(cron = "${scheduler.cron}")
+    @PostConstruct
     public void cleanup() {
-        operationService.removeOldOperations();
+        taskScheduler.schedule(
+                operationService::removeOldOperations,
+                Instant.ofEpochSecond(operationTTL)
+        );
     }
 }

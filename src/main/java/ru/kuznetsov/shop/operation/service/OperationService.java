@@ -27,6 +27,9 @@ public class OperationService {
     @Value("${operation.timeout}")
     private long waitingForOperationTime;
 
+    @Value("${operation.ttl}")
+    private long operationTTL;
+
     @Getter
     private final Map<OperationDto, List<OperationPayloadDto>> operations = new HashMap<>();
 
@@ -100,11 +103,15 @@ public class OperationService {
             entry.getValue().stream()
                     .max(Comparator.comparing(OperationPayloadDto::getDateTime))
                     .ifPresent(container -> {
-                        if (container.getDateTime().isBefore(LocalDateTime.now().minusHours(1))) {
+                        if (container.getDateTime().isBefore(LocalDateTime.now().minusSeconds(operationTTL))) {
                             removeOperation(entry.getKey());
                         }
                     });
         }
+    }
+
+    public void clearOperations() {
+        operations.clear();
     }
 
     public List<Long> getEntityIdsByOperationId(String operationId) {
