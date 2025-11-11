@@ -65,4 +65,14 @@ public class SaveOperationListener {
     public void addStoreToFailed(String dto, @Header(OPERATION_ID_HEADER) byte[] operationId) {
         operationService.putToFailedOperations(dto, operationId, SAVE);
     }
+
+    @KafkaListener(topics = ORDER_SAVE_SUCCESSFUL_TOPIC, groupId = "${spring.kafka.consumer.group-id}")
+    public void addOrderToSuccessful(String dto, @Header(OPERATION_ID_HEADER) byte[] operationId) {
+        operationService.putToSuccessfulOperations(dto, operationId, SAVE);
+    }
+
+    @KafkaListener(topics = ORDER_SAVE_FAIL_TOPIC, groupId = "${spring.kafka.consumer.group-id}")
+    public void addOrderToFailed(String dto, @Header(OPERATION_ID_HEADER) byte[] operationId) {
+        operationService.putToFailedOperations(dto, operationId, SAVE);
+    }
 }
