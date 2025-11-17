@@ -6,11 +6,11 @@
     <parent>
         <groupId>io.github.technic47</groupId>
         <artifactId>shop-spring-boot-starter</artifactId>
-        <version>1.0.14</version>
+        <version>1.0.17</version>
     </parent>
 
 	<artifactId>operation</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<name>operation</name>
 	<description>operation</description>
 
@@ -32,6 +32,11 @@
             <groupId>io.github.technic47</groupId>
             <artifactId>data-model-dto</artifactId>
             <version>${data-model-dto.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.technic47</groupId>
+            <artifactId>parameter</artifactId>
+            <version>${parameter-access.version}</version>
         </dependency>
 
 		<dependency>
