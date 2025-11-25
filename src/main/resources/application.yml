@@ -16,3 +16,6 @@ spring:
 operation:
   timeout: 10
   ttl: 3600
+
+server:
+  port: ${SERVICE_PORT}
