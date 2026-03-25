@@ -1,12 +1,12 @@
-spring:
-  application:
-    name: Operation_module
-
-  kafka:
-    bootstrap-servers: host.docker.internal:9092
-    consumer:
-      group-id: test
-
-operation:
-  timeout: 10
-  ttl: 1
+#spring:
+#  application:
+#    name: Operation_module
+#
+#  kafka:
+#    bootstrap-servers: host.docker.internal:9092
+#    consumer:
+#      group-id: test
+#
+#operation:
+#  timeout: 10
+#  ttl: 1

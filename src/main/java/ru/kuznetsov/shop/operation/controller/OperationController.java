@@ -3,6 +3,7 @@ package ru.kuznetsov.shop.operation.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.kuznetsov.shop.operation.api.OperationControllerApi;
 import ru.kuznetsov.shop.operation.dto.OperationRequest;
 import ru.kuznetsov.shop.operation.service.OperationService;
 import ru.kuznetsov.shop.represent.dto.OperationDto;
@@ -10,10 +11,13 @@ import ru.kuznetsov.shop.represent.dto.OperationPayloadDto;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+
 @RestController
 @RequestMapping("/operation")
 @RequiredArgsConstructor
-public class OperationController {
+public class OperationController implements OperationControllerApi {
 
     private final OperationService operationService;
 
@@ -24,17 +28,29 @@ public class OperationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<OperationDto> getOperation(@PathVariable String id) {
-        return ResponseEntity.ok(operationService.getOperation(id));
+        try {
+            return ResponseEntity.ok(operationService.getOperation(id));
+        } catch (Exception e) {
+            return ResponseEntity.noContent().build();
+        }
     }
 
     @GetMapping("/payload/{id}")
     public ResponseEntity<List<OperationPayloadDto>> getOperationData(@PathVariable String id) {
-        return ResponseEntity.ok(operationService.getOperationData(id));
+        try {
+            return ResponseEntity.ok(operationService.getOperationData(id));
+        } catch (Exception e) {
+            return ResponseEntity.noContent().build();
+        }
     }
 
     @GetMapping("/payload/{id}/wait")
     public ResponseEntity<List<Long>> getOperationDataWait(@PathVariable String id) {
-        return ResponseEntity.ok(operationService.getEntityIdsByOperationId(id));
+        try {
+            return ResponseEntity.ok(operationService.getEntityIdsByOperationId(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(NOT_FOUND).build();
+        }
     }
 
     @PostMapping()
@@ -44,7 +60,10 @@ public class OperationController {
 
     @PostMapping("/payload")
     public ResponseEntity<List<OperationPayloadDto>> getOperationData(@RequestBody OperationDto operation) {
-        return ResponseEntity.ok(operationService.getOperationData(operation));
+        List<OperationPayloadDto> operationData = operationService.getOperationData(operation);
+        return operationData.isEmpty() ?
+                ResponseEntity.status(NO_CONTENT).build()
+                : ResponseEntity.ok(operationData);
     }
 
     @DeleteMapping("/batch")
