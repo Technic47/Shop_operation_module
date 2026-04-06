@@ -132,9 +132,10 @@ public class OperationService {
                     .map(OperationPayloadDto::getPayloadId)
                     .toList();
         } catch (InterruptedException | ExecutionException e) {
+            logger.error("Error while getting entityIds by operationId", e);
+            logger.error(e.getMessage());
             throw new RuntimeException(e);
         }
-
         return entityIds;
     }
 
